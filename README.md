@@ -1,6 +1,6 @@
 # eslint-plugin-jsx-no-leaked-values
 
-Avoid accidentally rendering `0` or `NaN`. Only works with `@typescript-eslint/parser`.
+Avoid accidentally rendering `0` or `NaN`. Requires `@typescript-eslint/parser`.
 
 ## Examples
 
@@ -10,6 +10,8 @@ function MyComponent() {
     <div>
       {0 && <ComponentX /> /* error */}
       {NaN && <ComponentX /> /* error */}
+      {'' && <ComponentX /> /* no error */}
+      {false && <ComponentX /> /* no error */}
     </div>
   );
 }

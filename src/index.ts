@@ -43,17 +43,19 @@ export const rule = createRule<[], 'jsxNumber&&'>({
         const constrainedType = checker.getBaseConstraintOfType(leftNodeType);
         const type = constrainedType ?? leftNodeType;
 
-        let isLeftNodeNumber = tsutils.isTypeFlagSet(
-          type,
-          ts.TypeFlags.NumberLike
-        );
+        let isLeftNodeZero =
+          tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike) &&
+          tsutils.isFalsyType(type);
 
         let isLeftNodeAny = tsutils.isTypeFlagSet(type, ts.TypeFlags.Any);
 
-        if (!isLeftNodeNumber && !isLeftNodeAny && tsutils.isUnionType(type)) {
+        if (!isLeftNodeZero && !isLeftNodeAny && tsutils.isUnionType(type)) {
           for (const ty of type.types) {
-            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.NumberLike)) {
-              isLeftNodeNumber = true;
+            if (
+              tsutils.isTypeFlagSet(ty, ts.TypeFlags.NumberLike) &&
+              tsutils.isFalsyType(type)
+            ) {
+              isLeftNodeZero = true;
               break;
             }
             if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Any)) {
@@ -63,7 +65,7 @@ export const rule = createRule<[], 'jsxNumber&&'>({
           }
         }
 
-        if (isLeftNodeNumber || isLeftNodeAny) {
+        if (isLeftNodeZero || isLeftNodeAny) {
           context.report({
             node: expr.left,
             messageId: 'jsxNumber&&',

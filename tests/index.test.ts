@@ -27,6 +27,9 @@ ruleTester.run('jsx-no-leaked-values', rule, {
     {
       code: `<>{'' && <></>}</>`,
     },
+    {
+      code: `<>{1 && <></>}</>`,
+    },
   ],
   invalid: [
     {
