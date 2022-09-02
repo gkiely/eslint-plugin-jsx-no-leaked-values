@@ -8,7 +8,7 @@ import * as tsutils from 'tsutils';
 const createRule = ESLintUtils.RuleCreator(name => name);
 
 export const rule = createRule<[], 'jsxNumber&&'>({
-  name: 'jsx-no-leaked-render',
+  name: 'jsx-no-leaked-values',
   defaultOptions: [],
   meta: {
     type: 'problem',
@@ -77,13 +77,13 @@ export const rule = createRule<[], 'jsxNumber&&'>({
 
 export const configs = {
   recommended: {
-    plugins: ['jsx-no-leaked-render'],
+    plugins: ['jsx-no-leaked-values'],
     rules: {
-      'jsx-no-leaked-render/jsx-no-leaked-render': 'error',
+      'jsx-no-leaked-values/jsx-no-leaked-values': 'error',
     },
   },
 };
 
 export const rules = {
-  'jsx-no-leaked-render': rule,
+  'jsx-no-leaked-values': rule,
 };

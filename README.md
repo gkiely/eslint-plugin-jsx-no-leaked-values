@@ -1,4 +1,4 @@
-# eslint-plugin-jsx-no-leaked-render
+# eslint-plugin-jsx-no-leaked-values
 
 Avoid accidentally rendering `0` or `NaN`. Only works with `@typescript-eslint/parser`.
 
@@ -18,7 +18,7 @@ function MyComponent() {
 ## Installation
 
 ```sh
-npm i -D eslint-plugin-jsx-no-leaked-render
+npm i -D eslint-plugin-jsx-no-leaked-values
 ```
 
 ## Usage
@@ -27,9 +27,17 @@ Configure the plugin in your `.eslintrc`:
 
 ```json
 {
-  "plugins": ["jsx-no-leaked-render"],
+  "extends": ["plugin:jsx-no-leaked-values/recommended"]
+}
+```
+
+This essentially expands to:
+
+```json
+{
+  "plugins": ["jsx-no-leaked-values"],
   "rules": {
-    "jsx-no-leaked-render/jsx-no-leaked-render": "error"
+    "jsx-no-leaked-values/jsx-no-leaked-values": "error"
   }
 }
 ```

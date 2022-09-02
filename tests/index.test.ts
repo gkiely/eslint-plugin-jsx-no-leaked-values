@@ -13,7 +13,7 @@ const ruleTester = new TSESLint.RuleTester({
   parserOptions,
 });
 
-ruleTester.run('jsx-no-leaked-render', rule, {
+ruleTester.run('jsx-no-leaked-values', rule, {
   valid: [
     {
       code: `<>{true ? <></> : ''}</>`,

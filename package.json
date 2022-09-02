@@ -32,22 +32,22 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "eslint-plugin-jsx-no-leaked-render",
+  "name": "eslint-plugin-jsx-no-leaked-values",
   "author": "Grant Kiely",
-  "module": "dist/eslint-plugin-jsx-no-leaked-render.esm.js",
+  "module": "dist/eslint-plugin-jsx-no-leaked-values.esm.js",
   "exports": {
     ".": {
-      "import": "./dist/eslint-plugin-jsx-no-leaked-render.esm.js",
-      "require": "./dist/eslint-plugin-jsx-no-leaked-render.cjs.production.min.js"
+      "import": "./dist/eslint-plugin-jsx-no-leaked-values.esm.js",
+      "require": "./dist/eslint-plugin-jsx-no-leaked-values.cjs.production.min.js"
     }
   },
   "size-limit": [
     {
-      "path": "dist/eslint-plugin-jsx-no-leaked-render.cjs.production.min.js",
+      "path": "dist/eslint-plugin-jsx-no-leaked-values.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/eslint-plugin-jsx-no-leaked-render.esm.js",
+      "path": "dist/eslint-plugin-jsx-no-leaked-values.esm.js",
       "limit": "10 KB"
     }
   ],
