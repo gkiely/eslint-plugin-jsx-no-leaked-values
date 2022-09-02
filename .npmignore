@@ -25,9 +25,6 @@ coverage
 # Dependency directories
 node_modules/
 
-# Build directory
-dist
-
 # TypeScript v1 declaration files
 typings/
 
