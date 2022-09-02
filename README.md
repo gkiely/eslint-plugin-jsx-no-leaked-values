@@ -23,20 +23,19 @@ npm i -D eslint-plugin-jsx-no-leaked-render
 
 ## Usage
 
+Configure the plugin in your `.eslintrc`:
+
 ```json
 {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": ["./tsconfig.json"]
-  },
-  "plugins": ["jsx-no-leaked-render"]
+  "extends": ["plugin:jsx-no-leaked-render/recommended"]
 }
 ```
 
-Then enable the rule under the rules section.
+This essentially expands to:
 
 ```json
 {
+  "plugins": ["jsx-no-leaked-render"],
   "rules": {
     "jsx-no-leaked-render": "error"
   }

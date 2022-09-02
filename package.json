@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -34,6 +34,12 @@
   "name": "eslint-plugin-jsx-no-leaked-render",
   "author": "Grant Kiely",
   "module": "dist/eslint-plugin-jsx-no-leaked-render.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/eslint-plugin-jsx-no-leaked-render.esm.js",
+      "require": "./dist/eslint-plugin-jsx-no-leaked-render.cjs.production.min.js"
+    }
+  },
   "size-limit": [
     {
       "path": "dist/eslint-plugin-jsx-no-leaked-render.cjs.production.min.js",

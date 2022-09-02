@@ -75,8 +75,15 @@ export const rule = createRule<[], 'jsxNumber&&'>({
   },
 });
 
-export default {
-  rules: {
-    'jsx-no-leaked-render': rule,
+export const configs = {
+  recommended: {
+    plugins: ['jsx-no-leaked-render'],
+    rules: {
+      'jsx-no-leaked-render/jsx-no-leaked-render': 'error',
+    },
   },
+};
+
+export const rules = {
+  'jsx-no-leaked-render': rule,
 };
