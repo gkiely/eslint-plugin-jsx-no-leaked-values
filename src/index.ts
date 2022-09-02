@@ -7,7 +7,7 @@ import * as tsutils from 'tsutils';
 
 const createRule = ESLintUtils.RuleCreator(name => name);
 
-export default createRule<[], 'jsxNumber&&'>({
+export const rule = createRule<[], 'jsxNumber&&'>({
   name: 'jsx-no-leaked-render',
   defaultOptions: [],
   meta: {
@@ -74,3 +74,9 @@ export default createRule<[], 'jsxNumber&&'>({
     };
   },
 });
+
+export default {
+  rules: {
+    'jsx-no-leaked-render': rule,
+  },
+};

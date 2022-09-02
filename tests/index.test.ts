@@ -1,5 +1,5 @@
 import { TSESLint } from '@typescript-eslint/experimental-utils';
-import rule from '../src';
+import { rule } from '../src';
 
 const parserOptions: TSESLint.ParserOptions = {
   sourceType: 'module',

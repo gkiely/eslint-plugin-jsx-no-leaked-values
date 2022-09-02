@@ -21,6 +21,28 @@ function MyComponent() {
 npm i -D eslint-plugin-jsx-no-leaked-render
 ```
 
+## Usage
+
+```json
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  },
+  "plugins": ["jsx-no-leaked-render"]
+}
+```
+
+Then enable the rule under the rules section.
+
+```json
+{
+  "rules": {
+    "jsx-no-leaked-render": "error"
+  }
+}
+```
+
 ## Credit
 
 Inspired by: https://github.com/jeremy-deutsch/eslint-plugin-jsx-falsy
