@@ -15,7 +15,6 @@ export const rule = createRule<[], 'jsxNumber&&'>({
     docs: {
       description:
         'Prevent boolean expressions from adding unwanted falsy numbers to your JSX',
-      category: 'Possible Errors',
       recommended: 'error',
       requiresTypeChecking: true,
     },
