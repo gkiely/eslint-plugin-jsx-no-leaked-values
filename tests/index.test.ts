@@ -33,9 +33,7 @@ ruleTester.run('jsx-no-leaked-values', rule, {
   ],
   invalid: [
     {
-      code: `
-        const t = 0;
-        <>{t && <></>}</>
+      code: `const t = 0; <>{t && <></>}</>
       `,
       errors: [
         {
@@ -52,7 +50,15 @@ ruleTester.run('jsx-no-leaked-values', rule, {
       ],
     },
     {
-      code: ` const t = NaN; <>{t && <></>}</>`,
+      code: `<>{NaN && <></>}</>`,
+      errors: [
+        {
+          messageId: 'jsxNumber&&',
+        },
+      ],
+    },
+    {
+      code: `const t = NaN; <>{t && <></>}</>`,
       errors: [
         {
           messageId: 'jsxNumber&&',

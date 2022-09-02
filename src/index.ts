@@ -43,29 +43,37 @@ export const rule = createRule<[], 'jsxNumber&&'>({
         const constrainedType = checker.getBaseConstraintOfType(leftNodeType);
         const type = constrainedType ?? leftNodeType;
 
-        let isLeftNodeZero =
+        let isLeftNodeNumber =
           tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike) &&
-          tsutils.isFalsyType(type);
+          !tsutils.isNumericLiteral(tsNode);
+
+        let isLeftNodeZero =
+          tsutils.isNumericLiteral(tsNode) && tsutils.isFalsyType(type);
 
         let isLeftNodeAny = tsutils.isTypeFlagSet(type, ts.TypeFlags.Any);
 
-        if (!isLeftNodeZero && !isLeftNodeAny && tsutils.isUnionType(type)) {
-          for (const ty of type.types) {
+        if (!isLeftNodeNumber && !isLeftNodeAny && tsutils.isUnionType(type)) {
+          for (const t of type.types) {
             if (
-              tsutils.isTypeFlagSet(ty, ts.TypeFlags.NumberLike) &&
+              tsutils.isTypeFlagSet(t, ts.TypeFlags.NumberLike) &&
+              tsutils.isFalsyType(type)
+            ) {
+              isLeftNodeNumber = true;
+              break;
+            } else if (
+              tsutils.isNumericLiteral(tsNode) &&
               tsutils.isFalsyType(type)
             ) {
               isLeftNodeZero = true;
               break;
-            }
-            if (tsutils.isTypeFlagSet(ty, ts.TypeFlags.Any)) {
+            } else if (tsutils.isTypeFlagSet(t, ts.TypeFlags.Any)) {
               isLeftNodeAny = true;
               break;
             }
           }
         }
 
-        if (isLeftNodeZero || isLeftNodeAny) {
+        if (isLeftNodeNumber || isLeftNodeZero || isLeftNodeAny) {
           context.report({
             node: expr.left,
             messageId: 'jsxNumber&&',
