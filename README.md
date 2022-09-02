@@ -27,17 +27,9 @@ Configure the plugin in your `.eslintrc`:
 
 ```json
 {
-  "extends": ["plugin:jsx-no-leaked-render/recommended"]
-}
-```
-
-This essentially expands to:
-
-```json
-{
   "plugins": ["jsx-no-leaked-render"],
   "rules": {
-    "jsx-no-leaked-render": "error"
+    "jsx-no-leaked-render/jsx-no-leaked-render": "error"
   }
 }
 ```
