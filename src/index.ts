@@ -22,6 +22,7 @@ const checkError = (type: ts.Type): boolean => {
       () => true
     )
     .with(
+      // Generic numbers
       {
         numberLike: true,
         literal: false,
@@ -30,6 +31,7 @@ const checkError = (type: ts.Type): boolean => {
       () => true
     )
     .with(
+      // falsy literals
       {
         numberLike: true,
         literal: true,
@@ -75,13 +77,14 @@ export const rule = createRule<[], 'jsxNumber&&'>({
         const leftNodeType = checker.getTypeAtLocation(tsNode);
         const constrainedType = checker.getBaseConstraintOfType(leftNodeType);
         const type = constrainedType ?? leftNodeType;
-        console.log(
-          tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike),
-          tsutils.isLiteralType(type),
-          tsutils.isNumericLiteral(tsNode),
-          tsutils.isFalsyType(type),
-          tsutils.isUnionType(type)
-        );
+
+        // Testing
+        // console.log(
+        //   tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike),
+        //   tsutils.isLiteralType(type),
+        //   tsutils.isFalsyType(type),
+        //   tsutils.isTypeFlagSet(type, ts.TypeFlags.Any)
+        // );
 
         let isError = checkError(type);
         if (!isError && tsutils.isUnionType(type)) {
