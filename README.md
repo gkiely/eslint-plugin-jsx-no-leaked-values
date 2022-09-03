@@ -27,6 +27,24 @@ npm i -D eslint-plugin-jsx-no-leaked-values
 
 ## Usage
 
+Install and enable typescript-eslint with type checking, see:
+
+- https://typescript-eslint.io/docs
+- https://typescript-eslint.io/docs/linting/typed-linting
+
+```sh
+npm install -d @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript
+```
+
+```json
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "tsconfigRootDir": ".",
+    "project": ["./tsconfig.json"]
+    "plugins": ["@typescript-eslint"],
+  },
+```
+
 Configure the plugin in your `.eslintrc`:
 
 ```json
@@ -44,24 +62,6 @@ This essentially expands to:
     "jsx-no-leaked-values/jsx-no-leaked-values": "error"
   }
 }
-```
-
-Install and enable typescript-eslint with type checking, see:
-
-- https://typescript-eslint.io/docs
-- https://typescript-eslint.io/docs/linting/typed-linting
-
-```sh
-npm install -d @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript
-```
-
-```json
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "tsconfigRootDir": ".",
-    "project": ["./tsconfig.json", "./tsconfig.node.json"]
-    "plugins": ["@typescript-eslint"],
-  },
 ```
 
 ## Differences to jsx-no-leaked-render
