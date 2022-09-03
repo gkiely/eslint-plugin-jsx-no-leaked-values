@@ -44,6 +44,24 @@ This essentially expands to:
 }
 ```
 
+Install and enable typescript-eslint with type checking, see:
+
+- https://typescript-eslint.io/docs
+- https://typescript-eslint.io/docs/linting/typed-linting
+
+```sh
+npm install -d @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript
+```
+
+```json
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "tsconfigRootDir": ".",
+    "project": ["./tsconfig.json", "./tsconfig.node.json"]
+    "plugins": ["@typescript-eslint"],
+  },
+```
+
 ## Differences to jsx-no-leaked-render
 
 The (jsx-no-leaked-render)[https://github.com/jsx-eslint/eslint-plugin-react/blob/master/docs/rules/jsx-no-leaked-render.md] react plugin rule looks for all uses of `&&` that do not start with `Boolean(value)` or `!!value` and reports an error. This means that all values have to be coerced at the condition as it is not type aware, even booleans!
