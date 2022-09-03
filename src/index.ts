@@ -7,6 +7,15 @@ import * as tsutils from 'tsutils';
 
 const createRule = ESLintUtils.RuleCreator(name => name);
 
+const checkType = (type: ts.Type): boolean => {
+  return (
+    (tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike) &&
+      tsutils.isLiteralType(type) &&
+      tsutils.isFalsyType(type)) ||
+    tsutils.isTypeFlagSet(type, ts.TypeFlags.Any)
+  );
+};
+
 export const rule = createRule<[], 'jsxNumber&&'>({
   name: 'jsx-no-leaked-values',
   defaultOptions: [],
@@ -43,37 +52,25 @@ export const rule = createRule<[], 'jsxNumber&&'>({
         const constrainedType = checker.getBaseConstraintOfType(leftNodeType);
         const type = constrainedType ?? leftNodeType;
 
-        let isLeftNodeNumber =
-          tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike) &&
-          !tsutils.isNumericLiteral(tsNode);
-
-        let isLeftNodeZero =
-          tsutils.isNumericLiteral(tsNode) && tsutils.isFalsyType(type);
-
-        let isLeftNodeAny = tsutils.isTypeFlagSet(type, ts.TypeFlags.Any);
-
-        if (!isLeftNodeNumber && !isLeftNodeAny && tsutils.isUnionType(type)) {
+        let isError = checkType(type);
+        if (!isError && tsutils.isUnionType(type)) {
           for (const t of type.types) {
-            if (
-              tsutils.isTypeFlagSet(t, ts.TypeFlags.NumberLike) &&
-              tsutils.isFalsyType(type)
-            ) {
-              isLeftNodeNumber = true;
-              break;
-            } else if (
-              tsutils.isNumericLiteral(tsNode) &&
-              tsutils.isFalsyType(type)
-            ) {
-              isLeftNodeZero = true;
-              break;
-            } else if (tsutils.isTypeFlagSet(t, ts.TypeFlags.Any)) {
-              isLeftNodeAny = true;
+            if (checkType(t)) {
+              isError = true;
               break;
             }
           }
         }
 
-        if (isLeftNodeNumber || isLeftNodeZero || isLeftNodeAny) {
+        // console.log(
+        //   tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike),
+        //   tsutils.isLiteralType(type),
+        //   tsutils.isNumericLiteral(tsNode),
+        //   tsutils.isFalsyType(type),
+        //   tsutils.isUnionType(type)
+        // );
+
+        if (isError) {
           context.report({
             node: expr.left,
             messageId: 'jsxNumber&&',

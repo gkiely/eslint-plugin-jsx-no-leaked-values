@@ -16,6 +16,15 @@ const ruleTester = new TSESLint.RuleTester({
 ruleTester.run('jsx-no-leaked-values', rule, {
   valid: [
     {
+      code: `
+        const t = 1;
+        const Header = ({ body, title, buttons, links }: Props) => {
+          const send = useSend();
+          return <>{t && <p>test</p>}</>;
+        };
+      `,
+    },
+    {
       code: `<>{true ? <></> : ''}</>`,
     },
     {
@@ -32,6 +41,34 @@ ruleTester.run('jsx-no-leaked-values', rule, {
     },
   ],
   invalid: [
+    {
+      code: `
+      const t = NaN;
+      const Header = ({ body, title, buttons, links }: Props) => {
+        const send = useSend();
+        return <>{t && <p>test</p>}</>;
+      };
+    `,
+      errors: [
+        {
+          messageId: 'jsxNumber&&',
+        },
+      ],
+    },
+    {
+      code: `
+      const t = 0;
+      const Header = ({ body, title, buttons, links }: Props) => {
+        const send = useSend();
+        return <>{t && <p>test</p>}</>;
+      };
+    `,
+      errors: [
+        {
+          messageId: 'jsxNumber&&',
+        },
+      ],
+    },
     {
       code: `const t = 0; <>{t && <></>}</>
       `,
