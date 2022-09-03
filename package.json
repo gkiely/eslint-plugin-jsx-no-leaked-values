@@ -54,7 +54,7 @@
   "devDependencies": {
     "@size-limit/preset-small-lib": "^8.0.1",
     "@typescript-eslint/parser": "^5.36.1",
-    "eslint": "^6.8.0",
+    "eslint": "^8.23.0",
     "husky": "^8.0.1",
     "size-limit": "^8.0.1",
     "tsdx": "^0.14.1",
@@ -63,6 +63,7 @@
   },
   "dependencies": {
     "@typescript-eslint/experimental-utils": "^5.36.1",
+    "ts-pattern": "^4.0.5",
     "tsutils": "^3.21.0"
   }
 }

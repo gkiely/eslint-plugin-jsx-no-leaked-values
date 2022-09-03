@@ -4,16 +4,40 @@ import {
 } from '@typescript-eslint/experimental-utils';
 import * as ts from 'typescript';
 import * as tsutils from 'tsutils';
+import { match } from 'ts-pattern';
 
 const createRule = ESLintUtils.RuleCreator(name => name);
 
-const checkType = (type: ts.Type): boolean => {
-  return (
-    (tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike) &&
-      tsutils.isLiteralType(type) &&
-      tsutils.isFalsyType(type)) ||
-    tsutils.isTypeFlagSet(type, ts.TypeFlags.Any)
-  );
+const checkError = (type: ts.Type): boolean => {
+  return match({
+    numberLike: tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike),
+    literal: tsutils.isLiteralType(type),
+    falsy: tsutils.isFalsyType(type),
+    any: tsutils.isTypeFlagSet(type, ts.TypeFlags.Any),
+  })
+    .with(
+      {
+        any: true,
+      },
+      () => true
+    )
+    .with(
+      {
+        numberLike: true,
+        literal: false,
+        falsy: false,
+      },
+      () => true
+    )
+    .with(
+      {
+        numberLike: true,
+        literal: true,
+        falsy: true,
+      },
+      () => true
+    )
+    .otherwise(() => false);
 };
 
 export const rule = createRule<[], 'jsxNumber&&'>({
@@ -51,24 +75,23 @@ export const rule = createRule<[], 'jsxNumber&&'>({
         const leftNodeType = checker.getTypeAtLocation(tsNode);
         const constrainedType = checker.getBaseConstraintOfType(leftNodeType);
         const type = constrainedType ?? leftNodeType;
+        console.log(
+          tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike),
+          tsutils.isLiteralType(type),
+          tsutils.isNumericLiteral(tsNode),
+          tsutils.isFalsyType(type),
+          tsutils.isUnionType(type)
+        );
 
-        let isError = checkType(type);
+        let isError = checkError(type);
         if (!isError && tsutils.isUnionType(type)) {
           for (const t of type.types) {
-            if (checkType(t)) {
+            if (checkError(t)) {
               isError = true;
               break;
             }
           }
         }
-
-        // console.log(
-        //   tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike),
-        //   tsutils.isLiteralType(type),
-        //   tsutils.isNumericLiteral(tsNode),
-        //   tsutils.isFalsyType(type),
-        //   tsutils.isUnionType(type)
-        // );
 
         if (isError) {
           context.report({

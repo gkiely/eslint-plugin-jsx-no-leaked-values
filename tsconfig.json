@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*", "types", "tests/**/*"],
+  "include": ["src/**/*"],
   "compilerOptions": {
     "module": "esnext",
     "lib": ["dom", "esnext"],
@@ -20,9 +20,5 @@
     "noEmit": true,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitOverride": true,
-    "noUncheckedIndexedAccess": true,
-    "useUnknownInCatchVariables": true,
   }
 }

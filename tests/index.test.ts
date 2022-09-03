@@ -3,6 +3,7 @@ import { rule } from '../src';
 
 const parserOptions: TSESLint.ParserOptions = {
   sourceType: 'module',
+  ecmaVersion: 'latest',
   ecmaFeatures: {
     jsx: true,
   },
@@ -19,7 +20,6 @@ ruleTester.run('jsx-no-leaked-values', rule, {
       code: `
         const t = 1;
         const Header = ({ body, title, buttons, links }: Props) => {
-          const send = useSend();
           return <>{t && <p>test</p>}</>;
         };
       `,
@@ -45,7 +45,6 @@ ruleTester.run('jsx-no-leaked-values', rule, {
       code: `
       const t = NaN;
       const Header = ({ body, title, buttons, links }: Props) => {
-        const send = useSend();
         return <>{t && <p>test</p>}</>;
       };
     `,
