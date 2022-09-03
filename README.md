@@ -41,8 +41,8 @@ npm install -d @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint
   "parserOptions": {
     "tsconfigRootDir": ".",
     "project": ["./tsconfig.json"]
-    "plugins": ["@typescript-eslint"],
   },
+  "plugins": ["@typescript-eslint"],
 ```
 
 Configure the plugin in your `.eslintrc`:
