@@ -19,7 +19,7 @@ ruleTester.run('jsx-no-leaked-values', rule, {
     {
       code: `
         const t = 1;
-        const Header = ({ body, title, buttons, links }: Props) => {
+        const Component = () => {
           return <>{t && <p>test</p>}</>;
         };
       `,
@@ -44,7 +44,7 @@ ruleTester.run('jsx-no-leaked-values', rule, {
     {
       code: `
       const t = NaN;
-      const Header = ({ body, title, buttons, links }: Props) => {
+      const Component = () => {
         return <>{t && <p>test</p>}</>;
       };
     `,
@@ -57,8 +57,7 @@ ruleTester.run('jsx-no-leaked-values', rule, {
     {
       code: `
       const t = 0;
-      const Header = ({ body, title, buttons, links }: Props) => {
-        const send = useSend();
+      const Component = () => {
         return <>{t && <p>test</p>}</>;
       };
     `,

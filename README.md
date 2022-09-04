@@ -27,13 +27,13 @@ npm i -D eslint-plugin-jsx-no-leaked-values
 
 ## Usage
 
-Install and enable typescript-eslint with type checking, see:
+Install and enable typescript-eslint with type linting, see:
 
 - https://typescript-eslint.io/docs
 - https://typescript-eslint.io/docs/linting/typed-linting
 
 ```sh
-npm install -d @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript
+npm install -D @typescript-eslint/parser@latest @typescript-eslint/eslint-plugin@latest eslint@latest typescript@latest
 ```
 
 ```json

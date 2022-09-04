@@ -2,7 +2,7 @@ import {
   ESLintUtils,
   AST_NODE_TYPES,
 } from '@typescript-eslint/experimental-utils';
-import * as ts from 'typescript';
+import ts from 'typescript';
 import * as tsutils from 'tsutils';
 import { match } from 'ts-pattern';
 
