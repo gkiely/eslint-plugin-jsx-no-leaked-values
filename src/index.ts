@@ -1,7 +1,4 @@
-import {
-  ESLintUtils,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import ts from 'typescript';
 import * as tsutils from 'tsutils';
 import { match } from 'ts-pattern';
@@ -68,12 +65,9 @@ export const rule = createRule<[], 'jsxNumber&&'>({
         ) {
           return;
         }
-        const service = context.parserServices;
-        const checker = service?.program?.getTypeChecker();
-        const tsNode = service?.esTreeNodeToTSNodeMap?.get(expr.left);
-        if (!checker || !tsNode) {
-          throw new Error('Parser service not available!');
-        }
+        const service = ESLintUtils.getParserServices(context);
+        const checker = service.program.getTypeChecker();
+        const tsNode = service.esTreeNodeToTSNodeMap.get(expr.left);
         const leftNodeType = checker.getTypeAtLocation(tsNode);
         const constrainedType = checker.getBaseConstraintOfType(leftNodeType);
         const type = constrainedType ?? leftNodeType;
@@ -107,15 +101,37 @@ export const rule = createRule<[], 'jsxNumber&&'>({
   },
 });
 
-export const configs = {
-  recommended: {
-    plugins: ['jsx-no-leaked-values'],
-    rules: {
-      'jsx-no-leaked-values/jsx-no-leaked-values': 'error',
-    },
-  },
-};
-
 export const rules = {
   'jsx-no-leaked-values': rule,
 };
+
+const plugin = {
+  meta: {
+    name: 'jsx-no-leaked-values',
+  },
+  rules,
+  configs: {} as Record<string, unknown>,
+};
+
+// Legacy eslintrc format, for ESLint <9.
+plugin.configs.recommended = {
+  plugins: ['jsx-no-leaked-values'],
+  rules: {
+    'jsx-no-leaked-values/jsx-no-leaked-values': 'error',
+  },
+};
+
+// Flat config format, for ESLint >=9. `plugins` must map to plugin objects
+// rather than name strings, so this references the plugin itself.
+plugin.configs['flat/recommended'] = {
+  plugins: {
+    'jsx-no-leaked-values': plugin,
+  },
+  rules: {
+    'jsx-no-leaked-values/jsx-no-leaked-values': 'error',
+  },
+};
+
+export const configs = plugin.configs;
+
+export default plugin;

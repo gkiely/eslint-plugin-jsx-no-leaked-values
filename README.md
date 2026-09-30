@@ -45,6 +45,8 @@ npm install -D @typescript-eslint/parser@latest @typescript-eslint/eslint-plugin
   "plugins": ["@typescript-eslint"],
 ```
 
+### ESLint <9 (`.eslintrc`)
+
 Configure the plugin in your `.eslintrc`:
 
 ```json
@@ -61,6 +63,31 @@ This essentially expands to:
   "rules": {
     "jsx-no-leaked-values/jsx-no-leaked-values": "error"
   }
+}
+```
+
+### ESLint 9 (flat config)
+
+Add the `flat/recommended` config to your `eslint.config.js`:
+
+```js
+import jsxNoLeakedValues from 'eslint-plugin-jsx-no-leaked-values';
+
+export default [
+  jsxNoLeakedValues.configs['flat/recommended'],
+];
+```
+
+This essentially expands to:
+
+```js
+{
+  plugins: {
+    'jsx-no-leaked-values': jsxNoLeakedValues,
+  },
+  rules: {
+    'jsx-no-leaked-values/jsx-no-leaked-values': 'error',
+  },
 }
 ```
 
