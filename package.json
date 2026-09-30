@@ -34,6 +34,10 @@
   },
   "name": "eslint-plugin-jsx-no-leaked-values",
   "author": "Grant Kiely",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gkiely/eslint-plugin-jsx-no-leaked-values.git"
+  },
   "module": "dist/eslint-plugin-jsx-no-leaked-values.esm.js",
   "exports": {
     ".": {

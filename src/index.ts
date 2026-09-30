@@ -68,7 +68,13 @@ export const rule = createRule<[], 'jsxNumber&&'>({
         ) {
           return;
         }
-        const service = context.parserServices;
+        // ESLint 9 removed the deprecated `context.parserServices` alias;
+        // parser services now live only on `context.sourceCode`. The
+        // installed @typescript-eslint/experimental-utils types predate
+        // that API, hence the cast.
+        const service =
+          (context as unknown as { sourceCode?: { parserServices?: typeof context.parserServices } })
+            .sourceCode?.parserServices ?? context.parserServices;
         const checker = service?.program?.getTypeChecker();
         const tsNode = service?.esTreeNodeToTSNodeMap?.get(expr.left);
         if (!checker || !tsNode) {
@@ -107,15 +113,37 @@ export const rule = createRule<[], 'jsxNumber&&'>({
   },
 });
 
-export const configs = {
-  recommended: {
-    plugins: ['jsx-no-leaked-values'],
-    rules: {
-      'jsx-no-leaked-values/jsx-no-leaked-values': 'error',
-    },
-  },
-};
-
 export const rules = {
   'jsx-no-leaked-values': rule,
 };
+
+const plugin = {
+  meta: {
+    name: 'jsx-no-leaked-values',
+  },
+  rules,
+  configs: {} as Record<string, unknown>,
+};
+
+// Legacy eslintrc format, for ESLint <9.
+plugin.configs.recommended = {
+  plugins: ['jsx-no-leaked-values'],
+  rules: {
+    'jsx-no-leaked-values/jsx-no-leaked-values': 'error',
+  },
+};
+
+// Flat config format, for ESLint >=9. `plugins` must map to plugin objects
+// rather than name strings, so this references the plugin itself.
+plugin.configs['flat/recommended'] = {
+  plugins: {
+    'jsx-no-leaked-values': plugin,
+  },
+  rules: {
+    'jsx-no-leaked-values/jsx-no-leaked-values': 'error',
+  },
+};
+
+export const configs = plugin.configs;
+
+export default plugin;
