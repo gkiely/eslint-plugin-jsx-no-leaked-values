@@ -1,7 +1,4 @@
-import {
-  ESLintUtils,
-  AST_NODE_TYPES,
-} from '@typescript-eslint/experimental-utils';
+import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import ts from 'typescript';
 import * as tsutils from 'tsutils';
 import { match } from 'ts-pattern';
@@ -68,18 +65,9 @@ export const rule = createRule<[], 'jsxNumber&&'>({
         ) {
           return;
         }
-        // ESLint 9 removed the deprecated `context.parserServices` alias;
-        // parser services now live only on `context.sourceCode`. The
-        // installed @typescript-eslint/experimental-utils types predate
-        // that API, hence the cast.
-        const service =
-          (context as unknown as { sourceCode?: { parserServices?: typeof context.parserServices } })
-            .sourceCode?.parserServices ?? context.parserServices;
-        const checker = service?.program?.getTypeChecker();
-        const tsNode = service?.esTreeNodeToTSNodeMap?.get(expr.left);
-        if (!checker || !tsNode) {
-          throw new Error('Parser service not available!');
-        }
+        const service = ESLintUtils.getParserServices(context);
+        const checker = service.program.getTypeChecker();
+        const tsNode = service.esTreeNodeToTSNodeMap.get(expr.left);
         const leftNodeType = checker.getTypeAtLocation(tsNode);
         const constrainedType = checker.getBaseConstraintOfType(leftNodeType);
         const type = constrainedType ?? leftNodeType;
